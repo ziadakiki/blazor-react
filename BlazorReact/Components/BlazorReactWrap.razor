@@ -1,15 +1,38 @@
 ﻿@inject IJSRuntime JSRuntime
 
-<div id="react-component"></div>
+Blazor: @Name
+<div id="react-component">
+    
+</div>
 
 @code {
-    private IJSObjectReference? _module;
+    [Parameter]
+    public string? Name { get; set; }
+
+    private IJSObjectReference? _react;
+    private IJSObjectReference? _wrapper;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (_wrapper != null)
+        {
+            await _wrapper.InvokeVoidAsync("propChanged", Name);
+        }
+    }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
-            _module = await JSRuntime.InvokeAsync<IJSObjectReference>("import", "./js/bundle.js");
+            _react = await JSRuntime.InvokeAsync<IJSObjectReference>("import", "./js/main.4c46509a.js");
+            _wrapper = await JSRuntime.InvokeAsync<IJSObjectReference>("import", "./js/wrapper.js");
+            await _wrapper.InvokeVoidAsync("propChanged", Name);
         }
+    }
+
+    [JSInvokable]
+    public void Marcin()
+    {
+        
     }
 }

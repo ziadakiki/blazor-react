@@ -6,4 +6,12 @@
 
 Welcome to your new app.
 
-<BlazorReact.Components.BlazorReactWrap />
+<EditForm Model="_name">
+    <InputText @bind-Value="_name" />
+</EditForm>
+
+<BlazorReact.Components.BlazorReactWrap Name="@_name" />
+
+@code {
+    private string _name = "Ziad";
+}
